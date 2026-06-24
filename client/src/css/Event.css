@@ -5,7 +5,20 @@
     padding: 0px;
     margin: 20px;
     border: 2px solid white;
-    border-radius: 0px;
+    border-radius: 8px;
+    background-color: #c084a0;  /* dusty pink craft vibe */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-name-preview {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    pointer-events: none;
 }
 
 .event-information img {

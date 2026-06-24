@@ -1,58 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import '../css/Event.css'
 
-const Event = (props) => {
-
-    const [event, setEvent] = useState([])
-    const [time, setTime] = useState([])
-    const [remaining, setRemaining] = useState([])
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const eventData = await EventsAPI.getEventsById(props.id)
-                setEvent(eventData)
-            }
-            catch (error) {
-                throw error
-            }
-        }) ()
-    }, [])
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const result = await dates.formatTime(event.time)
-                setTime(result)
-            }
-            catch (error) {
-                throw error
-            }
-        }) ()
-    }, [event])
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const timeRemaining = await dates.formatRemainingTime(event.remaining)
-                setRemaining(timeRemaining)
-                dates.formatNegativeTimeRemaining(remaining, event.id)
-            }
-            catch (error) {
-                throw error
-            }
-        }) ()
-    }, [event])
+const Event = ({ name, date, description }) => {
+    const eventDate = new Date(date)
+    const isPast = eventDate < new Date()
+    const formattedDate = eventDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
 
     return (
-        <article className='event-information'>
-            <img src={event.image} />
-
+        <article className={`event-information ${isPast ? 'negative-time-remaining' : ''}`}>
+            <span className='event-name-preview'>{name}</span>
             <div className='event-information-overlay'>
                 <div className='text'>
-                    <h3>{event.title}</h3>
-                    <p><i className="fa-regular fa-calendar fa-bounce"></i> {event.date} <br /> {time}</p>
-                    <p id={`remaining-${event.id}`}>{remaining}</p>
+                    <h3>{name}</h3>
+                    <p>📅 {formattedDate}</p>
+                    <p>{description}</p>
+                    {isPast && <p>⚠️ This event has passed</p>}
                 </div>
             </div>
         </article>
